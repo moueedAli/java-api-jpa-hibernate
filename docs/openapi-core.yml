@@ -7,46 +7,47 @@ info:
 servers:
   - url: http://localhost:4000
 tags:
-  - name: examples
+  - name: users
+  - name: games
 paths:
-  /examples:
+  /users:
     post:
       tags:
-        - examples
-      summary: Example POST route
-      description: Description of an example POST route
+        - users
+      summary: Create a user
+      description: Create a new user
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateExample'
+              $ref: '#/components/schemas/CreateUser'
       responses:
         201:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Example'
+                $ref: '#/components/schemas/User'
     get:
       tags:
-        - examples
-      summary: Example GET route
-      description: Description of an example GET route
+        - users
+      summary: Get users
+      description: Get all users
       responses:
         200:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AllExamples'
-  /examples/{id}:
+                $ref: '#/components/schemas/AllUsers'
+  /users/{id}:
     put:
       tags:
-        - examples
-      summary: Example PUT route
-      description: Description of an example PUT route
+        - users
+      summary: Update a user
+      description: Update a user by ID
       parameters:
         - name: id
           in: path
-          description: The ID of the example to update
+          description: The ID of the user to update
           required: true
           schema:
             type: integer
@@ -54,22 +55,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateExample'
+              $ref: '#/components/schemas/CreateUser'
       responses:
         201:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Example'
+                $ref: '#/components/schemas/User'
     delete:
       tags:
-        - examples
-      summary: Example DELETE route
-      description: Description of an example DELETE route
+        - users
+      summary: Delete a user
+      description: Delete a user by ID
       parameters:
         - name: id
           in: path
-          description: The ID of the example to delete
+          description: The ID of the user to delete
           required: true
           schema:
             type: integer
@@ -78,39 +79,175 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Example'
+                $ref: '#/components/schemas/User'
+
+  /games:
+    post:
+      tags:
+        - games
+      summary: Create a game
+      description: Create a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGame'
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+    get:
+      tags:
+        - games
+      summary: Get games
+      description: Get all games
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllGames'
+  /games/{id}:
+    put:
+      tags:
+        - games
+      summary: Update a game
+      description: Update a game by ID
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the game to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGame'
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+    delete:
+      tags:
+        - games
+      summary: Delete a game
+      description: Delete a game by ID
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the game to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
 
 components:
   schemas:
-    CreateExample:
+    CreateUser:
       type: object
-      required: [propertyOne, propertyTwo]
+      required: [email, firstName, lastName, username, phone]
       properties:
-        propertyOne:
-          type: string
-          example: "Example Value"
-        propertyTwo:
+        email:
           type: email
           format: email
-          example: "example@email.value"
-    Example:
+          example: "example@example.com"
+        firstName:
+          type: string
+          example: "Matt"
+        lastName:
+          type: string
+          example: "Bellamy"
+        username:
+          type: string
+          example: "muse"
+        phone:
+          type: string
+          example: "+447182739"
+    User:
       type: object
       properties:
         id:
           type: integer
           example: 1
-        propertyOne:
+        email:
+          type: email
+          format: email
+          example: "example@example.com"
+        firstName:
           type: string
-          example: "Example Value"
-        propertyTwo:
+          example: "Matt"
+        lastName:
           type: string
-          example: "example@email.value"
-        createdAt:
+          example: "Bellamy"
+        username:
           type: string
-          format: DateTime
-          pattern: YYYY-MM-DDTHH:MM:SS
-          example: 2023-03-14T11:01:56.633+00:00
-    AllExamples:
+          example: "muse"
+        phone:
+          type: string
+          example: "+447182739"
+    AllUsers:
       type: array
       items:
-        $ref: '#/components/schemas/Example'
+        $ref: '#/components/schemas/User'
+
+    CreateGame:
+      type: object
+      required: [ title, genre, publisher, developer, releaseYear, isEarlyAccess ]
+      properties:
+        title:
+          type: string
+          example: "The Elder Scrolls: Morrowind"
+        genre:
+          type: string
+          example: "Fantasy RPG"
+        publisher:
+          type: string
+          example: "Zenimax"
+        developer:
+          type: string
+          example: "Bethesda"
+        releaseYear:
+          type: integer
+          example: 2002
+        isEarlyAccess:
+          type: boolean
+          example: false
+    Game:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "The Elder Scrolls: Morrowind"
+        genre:
+          type: string
+          example: "Fantasy RPG"
+        publisher:
+          type: string
+          example: "Zenimax"
+        developer:
+          type: string
+          example: "Bethesda"
+        releaseYear:
+          type: integer
+          example: 2002
+        isEarlyAccess:
+          type: boolean
+          example: false
+    AllGames:
+      type: array
+      items:
+        $ref: '#/components/schemas/Game'
